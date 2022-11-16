@@ -16,3 +16,5 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
   unset DEBIAN_FRONTEND
 
 USER zabbix
+
+RUN echo 'alias nocomments="sed -e :a -re '"'"'s/<\!--.*?-->//g;/<\!--/N;//ba'"'"' | sed -e :a -re '"'"'s/\/\*.*?\*\///g;/\/\*/N;//ba'"'"' | grep -v -P '"'"'^\s*(#|;|--|//|$)'"'"'"' >> ~/.bashrc
