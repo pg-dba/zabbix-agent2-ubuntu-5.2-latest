@@ -8,6 +8,10 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
   cd /usr/sbin; ln -s /usr/bin/fping && \
   chown root:zabbix /usr/bin/fping && \
   chmod u+s /usr/bin/fping && \
+  mkdir -p /etc/zabbix/zabbix_agentd.d/query && \
+  sed -i 's/# Plugins.Postgres.CustomQueriesPath=/Plugins.Postgres.CustomQueriesPath=\/etc\/zabbix\/zabbix_agentd.d\/query/' /etc/zabbix/zabbix_agent2.conf && \
+  echo 'SELECT COUNT(*) FROM pg_ls_waldir();' > /etc/zabbix/zabbix_agentd.d/query/walcount.sql && \
+  chown -R zabbix:zabbix /etc/zabbix/zabbix_agentd.d/query && \
   apt-get clean all && \
   unset DEBIAN_FRONTEND
 
