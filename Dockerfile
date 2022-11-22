@@ -11,6 +11,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
   mkdir -p /etc/zabbix/zabbix_agentd.d/query && \
   sed -i 's/# Plugins.Postgres.CustomQueriesPath=/Plugins.Postgres.CustomQueriesPath=\/etc\/zabbix\/zabbix_agentd.d\/query/' /etc/zabbix/zabbix_agent2.conf && \
   echo 'SELECT COUNT(*) FROM pg_ls_waldir() WHERE name ~ '"'"'^[0-9A-F]{24}$'"'"';' > /etc/zabbix/zabbix_agentd.d/query/walcount.sql && \
+  echo 'SELECT COUNT(*) FROM pg_replication_slots;' > /etc/zabbix/zabbix_agentd.d/query/rslot.sql && \
   chown -R zabbix:zabbix /etc/zabbix/zabbix_agentd.d/query && \
   apt-get clean all && \
   unset DEBIAN_FRONTEND
