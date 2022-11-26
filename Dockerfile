@@ -14,7 +14,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
   echo 'SELECT COUNT(*) FROM pg_replication_slots;' > /etc/zabbix/zabbix_agentd.d/query/rslot.sql && \
   echo "SELECT COUNT(*) FROM pg_stat_activity WHERE (backend_xmin IS NOT NULL OR backend_xid IS NOT NULL) AND (current_timestamp - query_start > \$1 OR current_timestamp - xact_start > \$1);" > /etc/zabbix/zabbix_agentd.d/query/longquery.sql && \
   echo "SELECT CASE setting WHEN 'off' THEN 0 WHEN 'on' THEN 1 WHEN 'always' THEN 2 END FROM pg_catalog.pg_settings WHERE name = 'archive_mode';" > /etc/zabbix/zabbix_agentd.d/query/archivemode.sql && \
-  echo 'SELECT pg_is_wal_replay_paused();' > /etc/zabbix/zabbix_agentd.d/query/rpause.sql && \
+  echo 'SELECT pg_is_wal_replay_paused()::integer;' > /etc/zabbix/zabbix_agentd.d/query/rpause.sql && \
   chown -R zabbix:zabbix /etc/zabbix/zabbix_agentd.d/query && \
   apt-get clean all && \
   unset DEBIAN_FRONTEND
