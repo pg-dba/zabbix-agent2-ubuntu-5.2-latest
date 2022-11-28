@@ -10,7 +10,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
   chmod u+s /usr/bin/fping && \
   mkdir -p /etc/zabbix/zabbix_agentd.d/query && \
   sed -i 's/# Plugins.Postgres.CustomQueriesPath=/Plugins.Postgres.CustomQueriesPath=\/etc\/zabbix\/zabbix_agentd.d\/query/' /etc/zabbix/zabbix_agent2.conf && \
-  echo "SELECT '<TABLE><TR><TH>test</TH></TR><TR><TD>тест</TD></TR></TABLE>;" > /etc/zabbix/zabbix_agentd.d/query/test.sql && \
+  echo "SELECT '<TABLE><TR><TH>test</TH></TR><TR><TD>тест</TD></TR></TABLE>';" > /etc/zabbix/zabbix_agentd.d/query/test.sql && \
   echo 'SELECT COUNT(*) FROM pg_ls_waldir() WHERE name ~ '"'"'^[0-9A-F]{24}$'"'"';' > /etc/zabbix/zabbix_agentd.d/query/walcount.sql && \
   echo 'SELECT COUNT(*) FROM pg_replication_slots;' > /etc/zabbix/zabbix_agentd.d/query/rslot.sql && \
   echo "SELECT COUNT(*) FROM pg_stat_activity WHERE (backend_xmin IS NOT NULL OR backend_xid IS NOT NULL) AND (current_timestamp - query_start > \$1 OR current_timestamp - xact_start > \$1);" > /etc/zabbix/zabbix_agentd.d/query/longquery.sql && \
