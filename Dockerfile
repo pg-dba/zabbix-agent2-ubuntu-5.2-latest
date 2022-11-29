@@ -28,6 +28,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
   echo 'SELECT CASE WHEN pg_is_in_recovery() THEN pg_is_wal_replay_paused()::integer ELSE 0 END;' > /etc/zabbix/zabbix_agentd.d/query/rpause.sql && \
   echo "SELECT string_agg(s,'') as result FROM (SELECT s FROM (SELECT 1 as n, 0 as seqno, '<TABLE>' as s UNION SELECT 2 as n, 0 as seqno, '<TR><TH>seqno</TH><TH>name</TH><TH>setting</TH><TH>applied</TH><TH>sourcefile</TH></TR>' as s UNION SELECT 3 as n, seqno, '<TR><TD>' || seqno || '</TD><TD>' || name || '</TD><TD>' || setting || '</TD><TD>' || applied || '</TD><TD>' || sourcefile || '</TD></TR>' as s FROM pg_catalog.pg_file_settings UNION SELECT 4 as n, 0 as seqno, '</TABLE>' as s ) tmp ORDER BY n, seqno) res;" > /etc/zabbix/zabbix_agentd.d/query/pgconfig.sql && \
   chown -R zabbix:zabbix /etc/zabbix/zabbix_agentd.d && \
+  apt-get -y purge wget && \
   apt-get clean all && \
   unset DEBIAN_FRONTEND
 
