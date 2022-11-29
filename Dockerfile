@@ -4,7 +4,15 @@ USER root
 
 RUN export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
-  apt-get -y install iputils-ping fping dnsutils telnet postgresql-client-10 && \
+  apt-get -y install iputils-ping fping dnsutils telnet && \
+  apt-get -y install wget && \
+  sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list' && \
+  wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
+  apt-get update && \
+  mkdir /var/lib/postgresql && \
+  groupadd -g 999 postgres && \
+  useradd -u 999 -g 999 postgres -d /var/lib/postgresql -s /bin/bash && \
+  apt-get -y install postgresql-client-10 && \
   cd /usr/sbin; ln -s /usr/bin/fping && \
   chown root:zabbix /usr/bin/fping && \
   chmod u+s /usr/bin/fping && \
