@@ -18,7 +18,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
   chmod u+s /usr/bin/fping && \
   mkdir -p /etc/zabbix/zabbix_agentd.d/query && \
   mkdir -p /etc/zabbix/zabbix_agentd.d/scripts && \
-  echo "UserParameter=pgsql.config,/etc/zabbix/zabbix_agentd.d/scripts/pg_config.sh" > userparameter_proc.conf && \
+  echo "UserParameter=pgsql.config[*],/etc/zabbix/zabbix_agentd.d/scripts/pg_config.sh" > userparameter_proc.conf && \
   sed -i 's/# Plugins.Postgres.CustomQueriesPath=/Plugins.Postgres.CustomQueriesPath=\/etc\/zabbix\/zabbix_agentd.d\/query/' /etc/zabbix/zabbix_agent2.conf && \
   echo "SELECT '<TABLE><TR><TH>test</TH></TR><TR><TD>тест</TD></TR></TABLE>' as Result;" > /etc/zabbix/zabbix_agentd.d/query/test.sql && \
   echo 'SELECT COUNT(*) FROM pg_ls_waldir() WHERE name ~ '"'"'^[0-9A-F]{24}$'"'"';' > /etc/zabbix/zabbix_agentd.d/query/walcount.sql && \
