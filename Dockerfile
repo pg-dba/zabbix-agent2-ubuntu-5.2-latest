@@ -11,7 +11,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     mkdir -p /etc/zabbix/zabbix_agentd.d/query && \
     sed -i 's/# Plugins.Postgres.CustomQueriesPath=/Plugins.Postgres.CustomQueriesPath=\/etc\/zabbix\/zabbix_agentd.d\/query/' /etc/zabbix/zabbix_agent2.conf && \
     echo 'SELECT COUNT(*) FROM pg_ls_waldir() WHERE name ~ '"'"'^[0-9A-F]{24}$'"'"';' > /etc/zabbix/zabbix_agentd.d/query/walcount.sql && \
-    echo 'SELECT extract (epoch FROM ((x - n)::interval)) as seconds FROM (SELECT min(modification) as n, max(modification) as x  FROM pg_ls_waldir() WHERE name ~ '"'"'^[0-9A-F]{24}$'"'"') tmp;' > /etc/zabbix/zabbix_agentd.d/query/walinterval.sql && \
+    echo 'SELECT (extract (epoch FROM ((x - n)::interval)))::integer as seconds FROM (SELECT min(modification) as n, max(modification) as x  FROM pg_ls_waldir() WHERE name ~ '"'"'^[0-9A-F]{24}$'"'"') tmp;' > /etc/zabbix/zabbix_agentd.d/query/walinterval.sql && \
     echo 'SELECT COUNT(*) FROM pg_replication_slots;' > /etc/zabbix/zabbix_agentd.d/query/rslot.sql && \
     echo "SELECT COUNT(*) FROM pg_stat_activity WHERE (backend_xmin IS NOT NULL OR backend_xid IS NOT NULL) AND (current_timestamp - query_start > \$1 OR current_timestamp - xact_start > \$1);" > /etc/zabbix/zabbix_agentd.d/query/longquery.sql && \
     echo "SELECT CASE setting WHEN 'off' THEN 0 WHEN 'on' THEN 1 WHEN 'always' THEN 2 END FROM pg_catalog.pg_settings WHERE name = 'archive_mode';" > /etc/zabbix/zabbix_agentd.d/query/archivemode.sql && \
