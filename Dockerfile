@@ -17,6 +17,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     echo "SELECT CASE setting WHEN 'off' THEN 0 WHEN 'on' THEN 1 WHEN 'always' THEN 2 END as result FROM pg_catalog.pg_settings WHERE name = 'archive_mode';" > /etc/zabbix/zabbix_agentd.d/query/archivemode.sql && \
     echo 'SELECT CASE WHEN pg_is_in_recovery() THEN pg_is_wal_replay_paused()::integer ELSE 0 END as result;' > /etc/zabbix/zabbix_agentd.d/query/rpause.sql && \
     echo "SELECT string_agg(s,'') as result FROM (SELECT s FROM (SELECT 1 as n, 0 as seqno, '<TABLE>' as s UNION SELECT 2 as n, 0 as seqno, '<TR><TH>seqno</TH><TH>name</TH><TH>setting</TH><TH>applied</TH><TH>sourcefile</TH></TR>' as s UNION SELECT 3 as n, seqno, '<TR><TD>' || seqno || '</TD><TD>' || name || '</TD><TD>' || setting || '</TD><TD>' || applied || '</TD><TD>' || sourcefile || '</TD></TR>' as s FROM pg_catalog.pg_file_settings UNION SELECT 4 as n, 0 as seqno, '</TABLE>' as s ) tmp ORDER BY n, seqno) res;" > /etc/zabbix/zabbix_agentd.d/query/pgconfig.sql && \
+    echo "SELECT CEILING( sum(stat.size) / 1024. / 1024. ) as logs_MB FROM pg_ls_dir(current_setting('log_directory')) AS logs CROSS JOIN LATERAL pg_stat_file(current_setting('log_directory') || '/' || logs) AS stat;" > /etc/zabbix/zabbix_agentd.d/query/logsize.sql && \
     chown -R zabbix:zabbix /etc/zabbix/zabbix_agentd.d && \
     apt-get clean all && \
     unset DEBIAN_FRONTEND
