@@ -4,13 +4,6 @@ USER root
 
 RUN export DEBIAN_FRONTEND=noninteractive && \
     apt-get update && \
-    apt-get -y install lsb-release gnupg2 wget && \
-    wget --output-document - https://packages.microsoft.com/keys/microsoft.asc 2>/dev/null | apt-key add - && \
-    wget --output-document - https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list 2>/dev/null > /etc/apt/sources.list.d/mssql-release.list && \
-    apt-get update && \
-    ACCEPT_EULA=Y apt-get install -y msodbcsql18 && \
-    ACCEPT_EULA=Y apt-get install -y mssql-tools18 && \
-    echo 'export PATH="$PATH:/opt/mssql-tools18/bin"' >> ~/.bashrc && \
     apt-get -y install iputils-ping fping dnsutils telnet && \
     cd /usr/sbin; ln -s /usr/bin/fping && \
     chown root:zabbix /usr/bin/fping && \
