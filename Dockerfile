@@ -8,6 +8,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     cd /usr/sbin; ln -s /usr/bin/fping && \
     chown root:zabbix /usr/bin/fping && \
     chmod u+s /usr/bin/fping && \
+    mv /etc/zabbix/zabbix_agentd.d /etc/zabbix/zabbix_agent2.d && \
     mkdir -p /etc/zabbix/zabbix_agent2.d/query && \
     sed -i 's/zabbix_agentd.d/zabbix_agent2.d/g' /etc/zabbix/zabbix_agent2.conf && \
     sed -i 's/# Plugins.Postgres.CustomQueriesPath=/Plugins.Postgres.CustomQueriesPath=\/etc\/zabbix\/zabbix_agent2.d\/query/' /etc/zabbix/zabbix_agent2.conf && \
